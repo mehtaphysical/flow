@@ -1,6 +1,7 @@
 require('dotenv').config();
 require('./lib/utils/connect')();
 
+const mongoose = require('mongoose');
 const Run = require('./lib/models/Run');
 const Report = require('./lib/models/Report');
 
@@ -13,4 +14,5 @@ start.setHours(start.getHours() - 1);
 Run
   .generateReport('1838055', start, end)
   .then(reports => Report.create({ reports }))
-  .then(console.log);
+  .then(console.log)
+  .finally(() => mongoose.connection.close());
