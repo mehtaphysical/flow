@@ -13,7 +13,8 @@
     "testEnvironment": "node",
     "reporters": [
       "default",
-      "<rootDir>/Reporter.js"
+      "<rootDir>/Reporter.js",
+      "jest-github-reporter"
     ]
   },
   "keywords": [],
