@@ -8,6 +8,7 @@ module.exports = class Reporter {
   }
 
   onRunComplete(contexts, results) {
+    if(process.env.CI) return;
     const name = execSync('git config --get user.name', { encoding: 'utf8' }).trim();
     const email = execSync('git config --get user.email', { encoding: 'utf8' }).trim();
     request
