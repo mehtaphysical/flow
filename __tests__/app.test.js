@@ -11,10 +11,14 @@ describe('app routes', () => {
   });
 
   beforeEach(() => {
-    return mongoose.connection.dropDatabase();
+    // return mongoose.connection.dropDatabase();
   });
 
   afterAll(() => {
     return mongoose.connection.close();
+  });
+
+  it('passes!', () => {
+    expect(true).toBe(false);
   });
 });
