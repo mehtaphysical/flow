@@ -11,7 +11,7 @@ module.exports = class Reporter {
     const name = execSync('git config --get user.name', { encoding: 'utf8' }).trim();
     const email = execSync('git config --get user.email', { encoding: 'utf8' }).trim();
     request
-      .post('http://localhost:7890/api/v1/runs')
+      .post('https://jest-test-rss.herokuapp.com/api/v1/runs')
       .send({
         ...results,
         name,
