@@ -19,6 +19,10 @@ describe('app routes', () => {
   });
 
   it('passes!', () => {
-    expect(true).toBe(false);
+    expect(true).toBe(true);
+  });
+
+  it('another', () => {
+    expect(false).toBeTruthy();
   });
 });
