@@ -10,7 +10,6 @@ const mongoose = require('mongoose');
 describe('app routes', () => {
   beforeAll(async() => {
     connect(await mongod.getUri());
-    return mongod.start();
   });
 
   beforeEach(() => {
