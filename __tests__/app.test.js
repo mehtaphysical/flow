@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 
 describe('app routes', () => {
   beforeAll(async() => {
-    connect(await mongod.getUri());
+    return connect(await mongod.getUri());
   });
 
   beforeEach(() => {
