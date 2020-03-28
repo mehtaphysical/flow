@@ -10,6 +10,7 @@ const mongoose = require('mongoose');
 describe('app routes', () => {
   beforeAll(async() => {
     connect(await mongod.getUri());
+    return mongod.start();
   });
 
   beforeEach(() => {
@@ -18,6 +19,10 @@ describe('app routes', () => {
 
   afterAll(() => {
     return mongoose.connection.close();
+  });
+
+  afterAll(() => {
+    return mongod.stop();
   });
 
   it('passes!', () => {
