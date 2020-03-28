@@ -1,13 +1,15 @@
 require('dotenv').config();
 
+const { MongoMemoryServer } = require('mongodb-memory-server');
+const mongod = new MongoMemoryServer();
 const request = require('supertest');
 const app = require('../lib/app');
 const connect = require('../lib/utils/connect');
 const mongoose = require('mongoose');
 
 describe('app routes', () => {
-  beforeAll(() => {
-    connect();
+  beforeAll(async() => {
+    connect(await mongod.getUri());
   });
 
   beforeEach(() => {

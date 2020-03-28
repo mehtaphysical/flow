@@ -9,10 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: node:stretch
-    services:
-      mongo:
-        image: mongo
     steps:
     - uses: actions/checkout@v2
       with:
