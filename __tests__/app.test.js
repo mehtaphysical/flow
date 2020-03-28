@@ -25,7 +25,7 @@ describe('app routes', () => {
   });
 
   it('passes!', () => {
-    expect(true).toBe(false);
+    expect(process.env.GITHUB_ACTION).toBe(false);
   });
 
   it('another', () => {
