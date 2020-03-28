@@ -19,5 +19,5 @@ module.exports = class Reporter {
   //       email
   //     })
   //     .end();
-  // }
+  }
 };
