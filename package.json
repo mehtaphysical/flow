@@ -11,6 +11,8 @@
   },
   "jest": {
     "testEnvironment": "node",
+    "globalSetup": "<rootDir>/setup.js",
+    "globalTeardown": "<rootDir>/teardown.js",
     "reporters": [
       "default",
       "<rootDir>/Reporter.js",
@@ -25,6 +27,7 @@
     "eslint": "^6.8.0",
     "jest": "^25.2.3",
     "jest-github-reporter": "^0.4.4",
+    "jest-runner-eslint": "^0.7.6",
     "mongodb-memory-server": "^6.5.0",
     "nodemon": "^2.0.2",
     "supertest": "^4.0.2"
