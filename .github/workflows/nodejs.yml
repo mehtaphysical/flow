@@ -13,7 +13,7 @@ jobs:
       with:
         node-version: '13.x'
     - run: npm ci
-    - run: CI=true npm test
+    - run: npm test
       env:
         CI: true
         MONGODB_URI: mongodb://mongo:27017/testing-ci
