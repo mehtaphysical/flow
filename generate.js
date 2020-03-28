@@ -1,5 +1,5 @@
 require('dotenv').config();
-require('./lib/utils/connect')();
+const connect = require('./lib/utils/connect');
 
 const mongoose = require('mongoose');
 const Run = require('./lib/models/Run');
@@ -11,8 +11,11 @@ end.setSeconds(0);
 const start = new Date(end);
 start.setHours(start.getHours() - 1);
 
-Run
-  .generateReport('1838055', start, end)
-  .then(reports => Report.create({ reports }))
-  .then(console.log)
-  .finally(() => mongoose.connection.close());
+if(start.getUTCHours() >= 20 && start.getUTCHours() < 25) {
+  connect();
+  Run
+    .generateReport('1838055', start, end)
+    .then(reports => Report.create({ reports }))
+    .then(console.log)
+    .finally(() => mongoose.connection.close());
+}
