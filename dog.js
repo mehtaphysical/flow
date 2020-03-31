@@ -1,3 +1,5 @@
-module.exports = () => {
-  
-}
+module.exports = (name, age, weight) => ({
+  name,
+  age,
+  weight
+})
