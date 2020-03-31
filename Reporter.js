@@ -1,5 +1,8 @@
+const { execSync } = require('child_process');
+
 module.exports = class Reporter {
-  onRunComplete() {
-    console.log('hi');
+  onRunComplete(contexts, results) {
+    console.log(results);
+
   }
 };
