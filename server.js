@@ -25,4 +25,4 @@ app.get('/next', (req, res) => {
   res.send(zoomOrchestrate(songs.pop() || defaultSong));
 });
 
-app.listen(7890);
+app.listen(process.env.PORT || 7890);
