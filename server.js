@@ -18,7 +18,7 @@ app.post('/stop', (req, res) => {
 });
 
 app.post('/songs', (req, res) => {
-  songs.shift(req.body.song);
+  songs.unshift(req.body.song);
   res.status(204).end();
 });
 
