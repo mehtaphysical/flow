@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const app = express();
 const {
@@ -16,7 +18,7 @@ app.post('/events', (req, res) => {
   const event = req.body.event;
   const meetingId = req.body.payload.object.id;
   console.log(event, meetingId);
-  if(meetingId === '296775701' || meetingId === '119978303') { 
+  if(meetingId == '296775701' || meetingId == '119978303') { 
     if(event === 'recording.started' || event === 'recording.resumed') {
       endZoom(meetingId)
         .then(call => res.send(call));
