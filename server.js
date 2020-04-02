@@ -27,7 +27,7 @@ app.get('/songs', (req, res) => {
   res.send(songs);
 });
 
-app.get('/next', (req, res) => {
+app.post('/next', (req, res) => {
   res
     .contentType('text/xml')
     .send(zoomOrchestrate(songs.pop() || defaultSong));
