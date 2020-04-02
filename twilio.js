@@ -9,7 +9,7 @@ const defaultSong = 'https://t4.bcbits.com/stream/b7e07f1271193e70864115e5917d39
 const calls = {};
 const jukeBox = {};
 
-const callZoom = (meetingId) => {
+const callZoom = meetingId => {
   return twilio.calls.create({
     to: '+16699009128',
     from: '+16157515375',

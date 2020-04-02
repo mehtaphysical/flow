@@ -8,6 +8,7 @@ const {
   getSongs
 } = require('./twilio');
 
+app.use(require('cors')());
 app.use(express.json());
 app.use(express.static('./public'))
 
