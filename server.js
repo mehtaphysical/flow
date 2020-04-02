@@ -8,7 +8,7 @@ const defaultSong = 'https://t4.bcbits.com/stream/b7e07f1271193e70864115e5917d39
 const songs = [];
 
 app.post('/start', (req, res) => {
-  callZoom(req.body.meetingId)
+  callZoom(req.body.meetingId, songs.pop() || defaultSong)
     .then(call => res.send(call));
 });
 
