@@ -12,10 +12,14 @@ app.post('/start', (req, res) => {
     .then(call => res.send(call));
 });
 
-app.post('/song', (req, res) => {
+app.post('/songs', (req, res) => {
   songs.shift(req.body.song);
   res.status(204).end();
-})
+});
+
+app.get('/songs', (req, res) => {
+  res.send(songs);
+});
 
 app.get('/next', (req, res) => {
   res.send(zoomOrchestrate(songs.pop() || defaultSong));
