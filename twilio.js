@@ -7,12 +7,12 @@ const twilio = new Twilio(sid, token);
 
 const calls = {}
 
-const callZoom = (meetingId, song) => {
+const callZoom = (meetingId, twiml) => {
   return twilio.calls.create({
     to: '+16699009128',
     from: '+16157515375',
     sendDigits: `${meetingId}#ww#wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww*6`,
-    twiml: zoomOrchestrate(song)
+    twiml
   })
     .then(call => {
       calls[meetingId] = call.sid;
