@@ -19,12 +19,12 @@ app.post('/events', (req, res) => {
   const meetingId = req.body.payload.object.id;
   console.log(event, meetingId);
   if(meetingId == '296775701' || meetingId == '119978303') { 
-    if(event === 'recording.started' || event === 'recording.resumed') {
+    if(event === 'recording.resumed') {
       endZoom(meetingId)
         .then(call => res.send(call));
     }
 
-    if(event === 'recording.stopped' || event === 'recording.paused') {
+    if(event === 'recording.paused') {
       callZoom(meetingId)
       .then(call => res.send(call));
     }
