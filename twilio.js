@@ -35,7 +35,7 @@ const endZoom = meetingId => {
 
 const zoomOrchestrate = meetingId => {
   const play = new VoiceResponse();
-  play.play((jukeBox[meetingId] || []).pop() || defaultSong);
+  play.play((jukeBox[meetingId] || []).shift() || defaultSong);
   play.redirect(`https://jest-test-rss.herokuapp.com/next/${meetingId}`);
 
   return play.toString();
@@ -43,7 +43,7 @@ const zoomOrchestrate = meetingId => {
 
 const addSong = (meetingId, song) => {
   if(!jukeBox[meetingId]) jukeBox[meetingId] = [];
-  jukeBox[meetingId].unshift(song);
+  jukeBox[meetingId].push(song);
 }
 
 const getSongs = meetingId => jukeBox[meetingId] || [];
