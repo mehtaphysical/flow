@@ -28,7 +28,9 @@ app.get('/songs', (req, res) => {
 });
 
 app.get('/next', (req, res) => {
-  res.send(zoomOrchestrate(songs.pop() || defaultSong));
+  res
+    .contentType('text/xml')
+    .send(zoomOrchestrate(songs.pop() || defaultSong));
 });
 
 app.listen(process.env.PORT || 7890);
