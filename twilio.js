@@ -5,18 +5,34 @@ const token = process.env.TWILIO_TOKEN;
 
 const twilio = new Twilio(sid, token);
 
+const calls = {}
+
 const callZoom = meetingId => {
   return twilio.calls.create({
     to: '+16699009128',
     from: '+16157515375',
     sendDigits: `${meetingId}#ww#wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww*6`,
     twiml: play.toString()
-  });
+  })
+    .then(call => {
+      calls[meetingId] = call.sid;
+    })
+};
+
+const endZoom = meetingId => {
+  const hangup = new VoiceResponse();
+  hangup.hangup();
+
+  return twilio.calls
+    .get(calls[meetingId])
+    .update({
+      twiml: hangup.toString()
+    });
 }
 
 const zoomOrchestrate = song => {
   const play = new VoiceResponse();
-  play.play(songs.pop() || defaultSong);
+  play.play(song);
   play.redirect('https://jest-test-rss.herokuapp.com/next');
 
   return play.toString();
@@ -24,5 +40,6 @@ const zoomOrchestrate = song => {
 
 module.exports = {
   callZoom,
+  endZoom,
   zoomOrchestrate
 }
