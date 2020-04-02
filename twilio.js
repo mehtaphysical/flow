@@ -16,6 +16,7 @@ const callZoom = (meetingId, song) => {
   })
     .then(call => {
       calls[meetingId] = call.sid;
+      return call;
     })
 };
 
