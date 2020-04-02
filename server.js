@@ -15,7 +15,7 @@ app.use(express.static('./public'))
 app.post('/events', (req, res) => {
   const event = req.body.event;
   const meetingId = req.body.payload.object.id;
-  if(meetingId !== '296775701' || meetingId !== '119978303') { 
+  if(meetingId === '296775701' || meetingId === '119978303') { 
     if(event === 'recording.started' || event === 'recording.resumed') {
       callZoom(meetingId)
         .then(call => res.send(call));
