@@ -18,12 +18,12 @@ app.post('/events', (req, res) => {
   console.log(event, meetingId);
   if(meetingId === '296775701' || meetingId === '119978303') { 
     if(event === 'recording.started' || event === 'recording.resumed') {
-      callZoom(meetingId)
+      endZoom(meetingId)
         .then(call => res.send(call));
     }
 
     if(event === 'recording.stopped' || event === 'recording.paused') {
-      endZoom(meetingId)
+      callZoom(meetingId)
       .then(call => res.send(call));
     }
   }
