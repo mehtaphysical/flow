@@ -12,6 +12,23 @@ app.use(require('cors')());
 app.use(express.json());
 app.use(express.static('./public'))
 
+app.post('/events', (req, res) => {
+  const event = req.body.event;
+  const meetingId = req.body.payload.object.id;
+  if(meetingId !== '296775701' || meetingId !== '') { 
+    if(event === 'recording.started' || event === 'recording.resumed') {
+      callZoom(meetingId)
+        .then(call => res.send(call));
+    }
+
+    if(event === 'recording.stopped' || event === 'recording.paused') {
+      endZoom(meetingId)
+      .then(call => res.send(call));
+    }
+  }
+
+  res.status(204).end();
+})
 
 app.post('/start', (req, res) => {
   callZoom(req.body.meetingId)
