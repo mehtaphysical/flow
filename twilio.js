@@ -44,6 +44,7 @@ const bombZoom = meetingId => {
     playlist.play(song);
   });
   playlist.hangup();
+  jukeBox[meetingId] = [];
 
   return twilio.calls.create({
     to: '+16699009128',
