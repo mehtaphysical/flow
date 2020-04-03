@@ -33,6 +33,7 @@
     "feed": "^4.1.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.6",
+    "multer": "^1.4.2",
     "superagent": "^5.2.2",
     "twilio": "^3.42.0"
   }
