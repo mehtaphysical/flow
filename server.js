@@ -14,10 +14,13 @@ app.use(require('cors')());
 app.use(express.json());
 app.use(express.static('./public'))
 
+const normalizeMeetingId = meetingId => meetingId.replace(/-/g, '');
+
 app.post('/events', (req, res) => {
   const event = req.body.event;
   const meetingId = req.body.payload.object.id;
   console.log(event, meetingId);
+
   if(meetingId == '296775701' || meetingId == '119978303') { 
     if(event === 'recording.resumed') {
       endZoom(meetingId)
@@ -34,32 +37,32 @@ app.post('/events', (req, res) => {
 })
 
 app.post('/start', (req, res) => {
-  callZoom(req.body.meetingId)
+  callZoom(normalizeMeetingId(req.body.meetingId))
     .then(call => res.send(call));
 });
 
 app.post('/stop', (req, res) => {
-  endZoom(req.body.meetingId)
+  endZoom(normalizeMeetingId(req.body.meetingId))
     .then(call => res.send(call));
 });
 
 app.post('/songs/:meetingId', (req, res) => {
-  addSong(req.params.meetingId, req.body.song);
+  addSong(normalizeMeetingId(req.params.meetingId), req.body.song);
   res.status(204).end();
 });
 
 app.get('/songs/:meetingId', (req, res) => {
-  res.send(getSongs(req.params.meetingId));
+  res.send(getSongs(normalizeMeetingId(req.params.meetingId)));
 });
 
 app.post('/next/:meetingId', (req, res) => {
   res
     .contentType('text/xml')
-    .send(zoomOrchestrate(req.params.meetingId));
+    .send(zoomOrchestrate(normalizeMeetingId(req.params.meetingId)));
 });
 
 app.post('/upload/:meetingId', require('./storage'), (req, res) => {
-  addSong(req.params.meetingId, `https://jest-test-rss.herokuapp.com/${req.file.filename}`);
+  addSong(normalizeMeetingId(req.params.meetingId), `https://jest-test-rss.herokuapp.com/${req.file.filename}`);
   res.status(204).end();
 });
 
