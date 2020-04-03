@@ -41,8 +41,8 @@ const endZoom = meetingId => {
 
 const bombZoom = meetingId => {
   const playlist = new VoiceResponse();
-  jukeBox[meetingId].forEach(song => {
-    playlist.play(song);
+  jukeBox[meetingId].forEach(({ mp3 }) => {
+    playlist.play(mp3);
   });
   playlist.hangup();
   jukeBox[meetingId] = [];
