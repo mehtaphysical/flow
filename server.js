@@ -4,8 +4,9 @@ const express = require('express');
 const app = express();
 const {
   callZoom,
-  zoomOrchestrate,
   endZoom,
+  bombZoom,
+  zoomOrchestrate,
   addSong,
   getSongs
 } = require('./twilio');
@@ -43,6 +44,11 @@ app.post('/start', (req, res) => {
 
 app.post('/stop', (req, res) => {
   endZoom(normalizeMeetingId(req.body.meetingId))
+    .then(call => res.send(call));
+});
+
+app.post('/bomb', (req, res) => {
+  bombZoom(normalizeMeetingId(req.body.meetingId))
     .then(call => res.send(call));
 });
 
