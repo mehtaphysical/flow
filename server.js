@@ -58,7 +58,7 @@ app.post('/next/:meetingId', (req, res) => {
     .send(zoomOrchestrate(req.params.meetingId));
 });
 
-app.post('/upload/:meetingId', require('multer')({ dest: 'public/' }).single('song'), (req, res) => {
+app.post('/upload/:meetingId', require('./storage'), (req, res) => {
   addSong(req.params.meetingId, `https://jest-test-rss.herokuapp.com/${req.file.filename}`);
   res.status(204).end();
 });
