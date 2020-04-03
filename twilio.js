@@ -20,7 +20,7 @@ const callZoom = meetingId => {
     to: '+16699009128',
     from: '+16157515375',
     sendDigits: `${meetingId}#ww#wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww*6`,
-    twiml: zoomOrchestrate(meetingId)
+    twiml: zoomOrchestrate(meetingId, true)
   })
     .then(call => {
       calls[meetingId] = call.sid;
@@ -59,9 +59,12 @@ const bombZoom = meetingId => {
     })
 }
 
-const zoomOrchestrate = meetingId => {
+const zoomOrchestrate = (meetingId, start = false) => {
+  const songs = jukeBox[meetingId].filter(({ playing }) => !playing);
+  const nextSong = songs[0] || { song: defaultSong, playing: start };
+  nextSong.playing = start;
   const play = new VoiceResponse();
-  play.play(jukeBox[meetingId].shift() || defaultSong);
+  play.play(nextSong);
   play.redirect(`https://jest-test-rss.herokuapp.com/next/${meetingId}`);
 
   return play.toString();
@@ -74,7 +77,12 @@ const addSong = (meetingId, song) => {
       cwd: 'public'
     }, (err, result) => {
       const { name } = result.match(pattern).groups;
-      jukeBox[meetingId].push(`http://167.172.206.21:7890/${name}.mp3`);
+      jukeBox[meetingId].push({
+        name,
+        mp3: `http://167.172.206.21:7890/${name}.mp3`,
+        image: `http://167.172.206.21:7890/${name}.jpg`,
+        playing: false
+      });
       resolve();
     });
   })
