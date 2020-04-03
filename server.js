@@ -53,8 +53,8 @@ app.post('/bomb', (req, res) => {
 });
 
 app.post('/songs/:meetingId', (req, res) => {
-  addSong(normalizeMeetingId(req.params.meetingId), req.body.song);
-  res.status(204).end();
+  addSong(normalizeMeetingId(req.params.meetingId), req.body.song)
+    .then(() => res.status(204).end());
 });
 
 app.get('/songs/:meetingId', (req, res) => {

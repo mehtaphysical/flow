@@ -1,3 +1,4 @@
+const { exec } = require('child_process');
 const { Twilio, twiml: { VoiceResponse } } = require('twilio');
 
 const sid = process.env.TWILIO_SID;
@@ -67,7 +68,16 @@ const zoomOrchestrate = meetingId => {
 }
 
 const addSong = (meetingId, song) => {
-  jukeBox[meetingId].push(song);
+  const pattern = /\[ffmpeg\] Destination: (?<name>.*)\.mp3/
+  return new Promise((resolve, reject) => {
+    exec(`youtube-dl --write-thumbnail -x --audio-format mp3 ${song}`, {
+      cwd: 'public'
+    }, (err, result) => {
+      const { name } = result.match(pattern).groups;
+      jukeBox[meetingId].push(`http://167.172.206.21:7890/${name}.mp3`);
+      resolve();
+    });
+  })
 }
 
 const getSongs = meetingId => jukeBox[meetingId] || [];
