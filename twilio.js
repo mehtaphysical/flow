@@ -47,6 +47,8 @@ const bombZoom = meetingId => {
   playlist.hangup();
   jukeBox[meetingId] = [];
 
+  console.log(playlist.toString());
+
   return twilio.calls.create({
     to: '+16699009128',
     from: '+16157515375',
@@ -79,8 +81,8 @@ const addSong = (meetingId, song) => {
       const { name } = result.match(pattern).groups;
       jukeBox[meetingId].push({
         name,
-        mp3: `http://167.172.206.21:7890/${name}.mp3`,
-        image: `http://167.172.206.21:7890/${name}.jpg`,
+        mp3: `https://juke.alchemycodelab.io/${name}.mp3`,
+        image: `https://juke.alchemycodelab.io/${name}.jpg`,
         playing: false
       });
       resolve();
