@@ -81,7 +81,7 @@ const addSong = (meetingId, song) => {
       const { name } = result.match(pattern).groups;
       jukeBox[meetingId].push({
         name,
-        mp3: `https://juke.alchemycodelab.io/${name}.mp3`,
+        mp3: encodeURI(`https://juke.alchemycodelab.io/${name}.mp3`),
         image: `https://juke.alchemycodelab.io/${name}.jpg`,
         playing: false
       });
