@@ -1,102 +1,65 @@
-const { exec } = require('child_process');
 const { Twilio, twiml: { VoiceResponse } } = require('twilio');
+const encode = require('./encode');
 
 const sid = process.env.TWILIO_SID;
 const token = process.env.TWILIO_TOKEN;
 
 const twilio = new Twilio(sid, token);
 
-const defaultSong = 'https://jest-test-rss.herokuapp.com/child.mp3';
 const calls = {};
-const jukeBox = new Proxy({}, {
-  get(target, prop) {
-    if(!target[prop]) target[prop] = [];
-    return target[prop];
-  }
-});
 
-const callZoom = meetingId => {
-  return twilio.calls.create({
-    to: '+16699009128',
-    from: '+16157515375',
-    sendDigits: `${meetingId}#ww#wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww*6`,
-    twiml: zoomOrchestrate(meetingId, true)
-  })
-    .then(call => {
-      calls[meetingId] = call.sid;
-      return call;
-    })
-};
-
-const endZoom = meetingId => {
+const endZoom = sid => {
   const hangup = new VoiceResponse();
   hangup.hangup();
 
   return twilio.calls
-    .get(calls[meetingId])
+    .get(sid)
     .update({
       twiml: hangup.toString()
     });
 }
 
-const bombZoom = meetingId => {
-  const playlist = new VoiceResponse();
-  jukeBox[meetingId].forEach(({ mp3 }) => {
-    playlist.play(mp3);
+const bombZoom = async(meetingId, url) => {
+  const { name, mp3, image } =  await encode(url, {
+    'max-filesize': '550k'
   });
+
+  const playlist = new VoiceResponse();
+  playlist.play(mp3);
   playlist.hangup();
-  jukeBox[meetingId] = [];
 
-  console.log(playlist.toString());
-
-  return twilio.calls.create({
+  const { sid } = await twilio.calls.create({
     to: '+16699009128',
     from: '+16157515375',
     sendDigits: `${meetingId}#ww#wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww*6`,
-    twiml: playlist.toString()
-  })
-    .then(call => {
-      calls[meetingId] = call.sid;
-      return call;
-    })
+    twiml: playlist.toString(),
+    statusCallback: 'https://juke.alchemycodelab.io/status',
+    record: true,
+    recordingStatusCallback: 'https://juke.alchemycodelab.io/recording',
+    trim: true
+  });
+
+  calls[sid] = { name, mp3, image, meetingId, complete: false };
+
+  return { name, image, sid };
+};
+
+const completedCall = sid => {
+  calls[sid] = { ...calls[sid], complete: true }
+};
+
+const completedRecording = (sid, recording) => {
+  calls[sid] = { ...calls[sid], recording };
 }
 
-const zoomOrchestrate = (meetingId, start = false) => {
-  const songs = jukeBox[meetingId].filter(({ playing }) => !playing);
-  const nextSong = songs[0] || { song: defaultSong, playing: start };
-  nextSong.playing = start;
-  const play = new VoiceResponse();
-  play.play(nextSong);
-  play.redirect(`https://jest-test-rss.herokuapp.com/next/${meetingId}`);
-
-  return play.toString();
-}
-
-const addSong = (meetingId, song) => {
-  const pattern = /\[ffmpeg\] Destination: (?<name>.*)\.mp3/
-  return new Promise((resolve, reject) => {
-    exec(`youtube-dl --write-thumbnail -x --audio-format mp3 ${song}`, {
-      cwd: 'public'
-    }, (err, result) => {
-      const { name } = result.match(pattern).groups;
-      jukeBox[meetingId].push({
-        name,
-        mp3: encodeURI(`https://juke.alchemycodelab.io/${name}.mp3`),
-        image: `https://juke.alchemycodelab.io/${name}.jpg`,
-        playing: false
-      });
-      resolve();
-    });
-  })
-}
-
-const getSongs = meetingId => jukeBox[meetingId] || [];
+const callStatus = sid => {
+  return calls[sid];
+};
 
 module.exports = {
-  callZoom,
   endZoom,
   bombZoom,
-  addSong,
-  getSongs,
-  zoomOrchestrate
+  completedCall,
+  completedRecording,
+  callStatus
 }
