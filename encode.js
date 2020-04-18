@@ -16,7 +16,7 @@ module.exports = (url, opts = { 'max-filesize': '5m' }) => {
       const { name } = result.match(pattern).groups;
       resolve({
         name,
-        mp3: `https://juke.alchemycodelab.io/${name}.mp3`,
+        mp3: encodeURI(`https://juke.alchemycodelab.io/${name}.mp3`),
         image: `https://juke.alchemycodelab.io/${name}.jpg`
       });
     });
